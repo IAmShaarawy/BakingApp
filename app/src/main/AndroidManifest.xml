@@ -29,7 +29,8 @@
             android:name=".Services.BakingIntentService"
             android:exported="false" />
 
-        <activity android:name=".Activities.RecipeActivity"></activity>
+        <activity android:name=".Activities.RecipeActivity" />
+        <activity android:name=".Activities.StepActivity"></activity>
     </application>
 
 </manifest>

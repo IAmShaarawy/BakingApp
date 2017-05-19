@@ -1,6 +1,7 @@
 package net.elshaarawy.bakingapp.Fragments;
 
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,21 +25,30 @@ import java.util.List;
  * Created by elshaarawy on 19-May-17.
  */
 
-public class RecipeFragment extends Fragment {
+public class RecipeFragment extends Fragment implements StepsAdapter.StepItemClickListener {
 
     private static final String EXTRA_INGREDIENTS = "extra_ingredients";
     private static final String EXTRA_STEPS = "extra_steps";
+    private static final String EXTRA_LISTENER = "extra_listener";
     private List<IngredientEntity> mIngredientEntities;
     private List<StepEntity> mStepEntities;
     private RecyclerView mIngredientsRv, mStepsRv;
     private IngredientsAdapter mIngredientsAdapter;
     private StepsAdapter mStepsAdapter;
+    private RecipeFragmentCallbacks mRecipeFragmentCallbacks;
+
+    public void setmRecipeFragmentCallbacks(RecipeFragmentCallbacks mRecipeFragmentCallbacks) {
+        this.mRecipeFragmentCallbacks = mRecipeFragmentCallbacks;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mIngredientEntities = getArguments().getParcelableArrayList(EXTRA_INGREDIENTS);
         mStepEntities = getArguments().getParcelableArrayList(EXTRA_STEPS);
+        if (savedInstanceState!=null){
+            mRecipeFragmentCallbacks = savedInstanceState.getParcelable(EXTRA_LISTENER);
+        }
     }
 
     @Nullable
@@ -57,21 +67,38 @@ public class RecipeFragment extends Fragment {
         mStepsRv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
         mStepsRv.setLayoutManager(linearLayoutManager1);
-        mStepsAdapter = new StepsAdapter(mStepEntities);
+        mStepsAdapter = new StepsAdapter(mStepEntities,this);
         mStepsRv.setAdapter(mStepsAdapter);
 
         return view;
     }
 
-    public static void attachMe(FragmentManager fragmentManager, int layout_container, List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities) {
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onItemClick(int position) {
+        mRecipeFragmentCallbacks.recipeFragmentItemClickListener(position);
+    }
+
+    public static void attachMe(FragmentManager fragmentManager, int layout_container,
+                                List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities,
+                                RecipeFragmentCallbacks callbacks) {
         RecipeFragment recipeFragment = new RecipeFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(EXTRA_INGREDIENTS, (ArrayList) ingredientEntities);
         bundle.putParcelableArrayList(EXTRA_STEPS, (ArrayList) stepEntities);
         recipeFragment.setArguments(bundle);
+        recipeFragment.setmRecipeFragmentCallbacks(callbacks);
         fragmentManager
                 .beginTransaction()
-                .add(layout_container, recipeFragment)
+                .replace(layout_container, recipeFragment)
                 .commit();
+    }
+
+    public interface RecipeFragmentCallbacks {
+        void recipeFragmentItemClickListener(int position);
     }
 }

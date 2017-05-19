@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private static final int LOADER_ID_INGREDIENTS = 102;
     private static final int LOADER_ID_STEPS = 103;
     String mCurrentItemId = null;
+    private String mCurrentTitle=null;
     List<IngredientEntity> mIngredientEntities = new ArrayList<>();
     List<StepEntity> mStepEntities = new ArrayList<>();
 
@@ -242,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mStepEntities.clear();
             mStepEntities.addAll(stepEntities);
 
-            RecipeActivity.starMe(this,mIngredientEntities,mStepEntities);
+            RecipeActivity.starMe(this,mCurrentTitle,mIngredientEntities,mStepEntities);
         }
     }
 
@@ -260,8 +261,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
 
     @Override
-    public void onItemClick(String recipeId) {
-        mCurrentItemId = recipeId;
+    public void onItemClick(RecipeEntity recipeEntity) {
+        mCurrentItemId = recipeEntity.getId();
+        mCurrentTitle = recipeEntity.getName();
         mLoaderManager.restartLoader(LOADER_ID_INGREDIENTS, null, this);
     }
 }

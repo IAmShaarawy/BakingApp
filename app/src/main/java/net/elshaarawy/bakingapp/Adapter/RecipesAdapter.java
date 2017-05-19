@@ -85,11 +85,11 @@ public class RecipesAdapter extends RecyclerView.Adapter<RecipesAdapter.RecipesH
 
         @Override
         public void onClick(View v) {
-            mRecipeItemClickListener.onItemClick(mRecipeEntities.get(getAdapterPosition()).getId());
+            mRecipeItemClickListener.onItemClick(mRecipeEntities.get(getAdapterPosition()));
         }
     }
 
     public interface RecipeItemClickListener {
-        void onItemClick(String  recipeId);
+        void onItemClick(RecipeEntity recipeEntity);
     }
 }

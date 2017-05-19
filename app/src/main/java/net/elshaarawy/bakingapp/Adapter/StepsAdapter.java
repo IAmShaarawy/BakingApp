@@ -1,14 +1,12 @@
 package net.elshaarawy.bakingapp.Adapter;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import net.elshaarawy.bakingapp.Data.Entities.IngredientEntity;
 import net.elshaarawy.bakingapp.Data.Entities.StepEntity;
 import net.elshaarawy.bakingapp.R;
 
@@ -19,10 +17,12 @@ import java.util.List;
  */
 
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsHolder> {
-    List<StepEntity> mStepEntities;
+    private List<StepEntity> mStepEntities;
+    private StepItemClickListener mStepItemClickListener;
 
-    public StepsAdapter(List<StepEntity> mStepEntities) {
+    public StepsAdapter(List<StepEntity> mStepEntities, StepItemClickListener mStepItemClickListener) {
         this.mStepEntities = mStepEntities;
+        this.mStepItemClickListener = mStepItemClickListener;
     }
 
     @Override
@@ -48,16 +48,26 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsHolder>
         return mStepEntities.size();
     }
 
-    class StepsHolder extends RecyclerView.ViewHolder{
+    class StepsHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView dataTextView ;
 
         public StepsHolder(View itemView) {
             super(itemView);
             dataTextView = (TextView) itemView;
+            itemView.setOnClickListener(this);
         }
         void bindData(String data){
             dataTextView.setText(data);
         }
+
+        @Override
+        public void onClick(View v) {
+            mStepItemClickListener.onItemClick(getAdapterPosition());
+        }
+    }
+
+    public interface StepItemClickListener {
+        void onItemClick(int position);
     }
 }
