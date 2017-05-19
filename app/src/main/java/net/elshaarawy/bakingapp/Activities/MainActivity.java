@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mStepEntities.clear();
             mStepEntities.addAll(stepEntities);
 
-            Toast.makeText(this,mIngredientEntities.size()+"\n"+mStepEntities.size(),Toast.LENGTH_SHORT).show();
+            RecipeActivity.starMe(this,mIngredientEntities,mStepEntities);
         }
     }
 

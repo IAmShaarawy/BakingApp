@@ -29,6 +29,7 @@
             android:name=".Services.BakingIntentService"
             android:exported="false" />
 
+        <activity android:name=".Activities.RecipeActivity"></activity>
     </application>
 
 </manifest>
