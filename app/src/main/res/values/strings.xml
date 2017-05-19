@@ -1,0 +1,7 @@
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+    <string name="app_name">BakingApp</string>
+    <string name="api_call">https://d17h27t6h515a5.cloudfront.net/topher/2017/May/59121517_baking/</string>
+    <string name="format_servings">
+        Serving <xliff:g id="serving_people">%s</xliff:g> people
+    </string>
+</resources>
