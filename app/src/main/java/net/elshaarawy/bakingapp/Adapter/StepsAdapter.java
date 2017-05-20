@@ -14,8 +14,6 @@ import net.elshaarawy.bakingapp.R;
 
 import java.util.List;
 
-import static android.os.Build.VERSION.SDK;
-
 /**
  * Created by elshaarawy on 19-May-17.
  */
@@ -23,7 +21,12 @@ import static android.os.Build.VERSION.SDK;
 public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsHolder> {
     private List<StepEntity> mStepEntities;
     private StepItemClickListener mStepItemClickListener;
-    private int mSelected = -1;
+    private int mSelected = 0;
+    private boolean hasIndicator;
+
+    public void setHasIndicator(boolean hasIndicator) {
+        this.hasIndicator = hasIndicator;
+    }
 
     public StepsAdapter(List<StepEntity> mStepEntities, StepItemClickListener mStepItemClickListener) {
         this.mStepEntities = mStepEntities;
@@ -46,15 +49,17 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsHolder>
 
         View view = holder.getmView();
 
-        if (mSelected == position){
+        if (hasIndicator){
+            if (mSelected == position){
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                view.setBackgroundColor(view.getContext().getColor(R.color.colorAccent));
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    view.setBackgroundColor(view.getContext().getColor(R.color.colorAccent));
+                }else {
+                    view.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorAccent));
+                }
             }else {
-                view.setBackgroundColor(view.getContext().getResources().getColor(R.color.colorAccent));
+                view.setBackgroundColor(Color.WHITE);
             }
-        }else {
-            view.setBackgroundColor(Color.WHITE);
         }
 
         holder.bindData(data);
@@ -90,7 +95,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsHolder>
         @Override
         public void onClick(View v) {
 
-            if (mSelected != getAdapterPosition()){
+            if (mSelected != getAdapterPosition()&&hasIndicator){
                 StepsAdapter.this.notifyItemChanged(mSelected);
                 mSelected = getAdapterPosition();
                 StepsAdapter.this.notifyItemChanged(getAdapterPosition());

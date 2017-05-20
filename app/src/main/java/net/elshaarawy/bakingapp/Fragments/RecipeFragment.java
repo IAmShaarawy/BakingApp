@@ -30,12 +30,14 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
     private static final String EXTRA_INGREDIENTS = "extra_ingredients";
     private static final String EXTRA_STEPS = "extra_steps";
     private static final String EXTRA_LISTENER = "extra_listener";
+    private static final String EXTRA_HAS_INDICATOR = "extra_has_indicator";
     private List<IngredientEntity> mIngredientEntities;
     private List<StepEntity> mStepEntities;
     private RecyclerView mIngredientsRv, mStepsRv;
     private IngredientsAdapter mIngredientsAdapter;
     private StepsAdapter mStepsAdapter;
     private RecipeFragmentCallbacks mRecipeFragmentCallbacks;
+    private boolean hasIndicator;
 
     public void setmRecipeFragmentCallbacks(RecipeFragmentCallbacks mRecipeFragmentCallbacks) {
         this.mRecipeFragmentCallbacks = mRecipeFragmentCallbacks;
@@ -46,6 +48,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
         super.onCreate(savedInstanceState);
         mIngredientEntities = getArguments().getParcelableArrayList(EXTRA_INGREDIENTS);
         mStepEntities = getArguments().getParcelableArrayList(EXTRA_STEPS);
+        hasIndicator = getArguments().getBoolean(EXTRA_HAS_INDICATOR);
         if (savedInstanceState!=null){
             mRecipeFragmentCallbacks = savedInstanceState.getParcelable(EXTRA_LISTENER);
         }
@@ -68,6 +71,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
         LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
         mStepsRv.setLayoutManager(linearLayoutManager1);
         mStepsAdapter = new StepsAdapter(mStepEntities,this);
+        mStepsAdapter.setHasIndicator(hasIndicator);
         mStepsRv.setAdapter(mStepsAdapter);
 
         return view;
@@ -86,11 +90,13 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
 
     public static void attachMe(FragmentManager fragmentManager, int layout_container,
                                 List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities,
-                                RecipeFragmentCallbacks callbacks) {
+                                RecipeFragmentCallbacks callbacks,
+                                boolean hasIndicator) {
         RecipeFragment recipeFragment = new RecipeFragment();
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(EXTRA_INGREDIENTS, (ArrayList) ingredientEntities);
         bundle.putParcelableArrayList(EXTRA_STEPS, (ArrayList) stepEntities);
+        bundle.putBoolean(EXTRA_HAS_INDICATOR,hasIndicator);
         recipeFragment.setArguments(bundle);
         recipeFragment.setmRecipeFragmentCallbacks(callbacks);
         fragmentManager

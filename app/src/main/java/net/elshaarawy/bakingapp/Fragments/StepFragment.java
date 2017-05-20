@@ -1,5 +1,7 @@
 package net.elshaarawy.bakingapp.Fragments;
 
+import android.annotation.SuppressLint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -8,6 +10,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.DefaultRenderersFactory;
+import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
+import com.google.android.exoplayer2.source.ExtractorMediaSource;
+import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
+import com.google.android.exoplayer2.util.Util;
 
 import net.elshaarawy.bakingapp.Data.Entities.StepEntity;
 import net.elshaarawy.bakingapp.R;
@@ -19,7 +33,10 @@ import net.elshaarawy.bakingapp.R;
 public class StepFragment extends Fragment {
 
     private static final String EXTRA_RECIPE = "extra_recipe";
-    StepEntity mStepEntity;
+    private StepEntity mStepEntity;
+
+    private SimpleExoPlayer mVideoPlayer;
+    private TextView mStepDescTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,8 +48,14 @@ public class StepFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_step, container, false);
-        TextView textView = (TextView) view.findViewById(R.id.url);
-        textView.setText(mStepEntity.getDescription());
+
+        if (savedInstanceState == null){
+            VideoPlayerFragment.attachMe(getFragmentManager(),R.id.step_video_container,mStepEntity.getVideoURL());
+        }
+
+        mStepDescTextView = (TextView) view.findViewById(R.id.step_desc);
+        mStepDescTextView.setText(mStepEntity.getDescription());
+
         return view;
     }
 
