@@ -1,5 +1,7 @@
 package net.elshaarawy.bakingapp.Fragments;
 
+import android.appwidget.AppWidgetManager;
+import android.content.ComponentName;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -18,6 +20,7 @@ import net.elshaarawy.bakingapp.Data.Entities.IngredientEntity;
 import net.elshaarawy.bakingapp.Data.Entities.StepEntity;
 import net.elshaarawy.bakingapp.R;
 import net.elshaarawy.bakingapp.Utils.PreferenceUtil;
+import net.elshaarawy.bakingapp.Widget.IngredientsWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,6 +105,10 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
             mLike.setImageResource(R.drawable.ic_thumb_up_accent_24dp);
             mPreferenceUtil.editValue(DefaultKeys.PREF_IS_DESIRED,itemId);
         }
+
+        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
+        int [] appWidgetsId = appWidgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidget.class));
+        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetsId,R.id.widget_list);
     }
 
     @Override
