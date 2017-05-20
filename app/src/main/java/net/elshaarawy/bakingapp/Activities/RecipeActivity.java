@@ -18,11 +18,12 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
 
     private static final String EXTRA_INGREDIENTS = "extra_ingredients";
     private static final String EXTRA_STEPS = "extra_steps";
-    private static final String FRAGMENT_TAG = "fragment_tag";
     private static final String EXTRA_TITLE = "extra_title";
+    private static final String EXTRA_ID = "extra_liked";
 
     private List<IngredientEntity> mIngredientEntities;
     private List<StepEntity> mStepEntities;
+    private String itemId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,18 +33,19 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         Intent intent = getIntent();
         mIngredientEntities = intent.getParcelableArrayListExtra(EXTRA_INGREDIENTS);
         mStepEntities = intent.getParcelableArrayListExtra(EXTRA_STEPS);
+        itemId  = intent.getStringExtra(EXTRA_ID);
         getSupportActionBar().setTitle(intent.getStringExtra(EXTRA_TITLE));
 
         if (findViewById(R.id.recipe_portrait) != null) {
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_portrait,
                     mIngredientEntities,
-                    mStepEntities, this,false);
+                    mStepEntities, this,false,itemId);
         } else if (findViewById(R.id.recipe_land) != null) {
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_master,
                     mIngredientEntities,
-                    mStepEntities, this,true);
+                    mStepEntities, this,true,itemId);
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_detail,
                     mStepEntities.get(0));
@@ -51,7 +53,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_master,
                     mIngredientEntities,
-                    mStepEntities, this,true);
+                    mStepEntities, this,true,itemId);
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_detail,
                     mStepEntities.get(0));
@@ -75,11 +77,14 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         }
     }
 
-    public static void starMe(Context context, String recipeTitle, List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities) {
+    public static void starMe(Context context,String itemId ,String recipeTitle,
+                              List<IngredientEntity> ingredientEntities,
+                              List<StepEntity> stepEntities) {
         Intent intent = new Intent(context, RecipeActivity.class);
         intent.putExtra(EXTRA_TITLE, recipeTitle);
         intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList) ingredientEntities);
         intent.putParcelableArrayListExtra(EXTRA_STEPS, (ArrayList) stepEntities);
+        intent.putExtra(EXTRA_ID,itemId);
         context.startActivity(intent);
     }
 

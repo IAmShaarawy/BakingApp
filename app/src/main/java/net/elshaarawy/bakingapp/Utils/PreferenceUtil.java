@@ -88,6 +88,7 @@ public class PreferenceUtil {
     public static final class DefaultKeys {
         public static final String DEFAULT_SHARED_PREFERENCE = "DefaultPreference";
         public static final String PREF_IS_FIRST_TIME = "isFirstTime";
+        public static final String PREF_IS_DESIRED  = "pref_is_desired";
     }
 
 }

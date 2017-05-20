@@ -49,10 +49,15 @@ public class StepActivity extends AppCompatActivity implements View.OnClickListe
             mStepForward.setOnClickListener(this);
             mStepBack.setOnClickListener(this);
 
-            if (mPosition == 0)
+            if (mPosition == 0) {
                 mStepBack.setEnabled(false);
-            if (mPosition == mStepsCount - 1)
+                mStepBack.setImageResource(R.drawable.ic_keyboard_arrow_left_black_24dp);
+            }
+
+            if (mPosition == mStepsCount - 1) {
                 mStepForward.setEnabled(false);
+                mStepForward.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
+            }
 
         } else if (findViewById(R.id.step_detail_land) != null) {
             VideoPlayerFragment.attachMe(getSupportFragmentManager(),
@@ -86,8 +91,10 @@ public class StepActivity extends AppCompatActivity implements View.OnClickListe
                         R.id.step_detail_portrait, mStepEntities.get(mPosition));
                 if (mPosition > mStepsCount - 2) {
                     mStepForward.setEnabled(false);
+                    mStepForward.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
                 } else {
                     mStepBack.setEnabled(true);
+                    mStepBack.setImageResource(R.drawable.ic_keyboard_arrow_left_accent_24dp);
                 }
                 break;
             case R.id.step_back:
@@ -97,8 +104,10 @@ public class StepActivity extends AppCompatActivity implements View.OnClickListe
                         R.id.step_detail_portrait, mStepEntities.get(mPosition));
                 if (mPosition == 0) {
                     mStepBack.setEnabled(false);
+                    mStepBack.setImageResource(R.drawable.ic_keyboard_arrow_left_black_24dp);
                 } else {
                     mStepForward.setEnabled(true);
+                    mStepForward.setImageResource(R.drawable.ic_keyboard_arrow_right_accent_24dp);
                 }
                 break;
         }

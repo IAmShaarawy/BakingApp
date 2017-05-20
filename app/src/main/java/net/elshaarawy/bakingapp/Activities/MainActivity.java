@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             mStepEntities.clear();
             mStepEntities.addAll(stepEntities);
 
-            RecipeActivity.starMe(this,mCurrentTitle,mIngredientEntities,mStepEntities);
+            RecipeActivity.starMe(this,mCurrentItemId,mCurrentTitle,mIngredientEntities,mStepEntities);
         }
     }
 
