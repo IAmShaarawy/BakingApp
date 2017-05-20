@@ -81,6 +81,7 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
     @Override
     public void onItemClick(int position) {
         mRecipeFragmentCallbacks.recipeFragmentItemClickListener(position);
+        mIngredientsRv.scrollToPosition(position);
     }
 
     public static void attachMe(FragmentManager fragmentManager, int layout_container,

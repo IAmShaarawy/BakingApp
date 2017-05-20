@@ -35,24 +35,23 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
         getSupportActionBar().setTitle(intent.getStringExtra(EXTRA_TITLE));
 
         if (findViewById(R.id.recipe_portrait) != null) {
-             RecipeFragment.attachMe(getSupportFragmentManager(),
-                     R.id.recipe_portrait,
-                     mIngredientEntities,
-                     mStepEntities,this);
-        }
-        else if (findViewById(R.id.recipe_land) !=null){
+            RecipeFragment.attachMe(getSupportFragmentManager(),
+                    R.id.recipe_portrait,
+                    mIngredientEntities,
+                    mStepEntities, this);
+        } else if (findViewById(R.id.recipe_land) != null) {
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_master,
                     mIngredientEntities,
-                    mStepEntities,this);
+                    mStepEntities, this);
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_detail,
                     mStepEntities.get(0));
-        }else if (findViewById(R.id.recipe_xl) !=null){
+        } else if (findViewById(R.id.recipe_xl) != null) {
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_master,
                     mIngredientEntities,
-                    mStepEntities,this);
+                    mStepEntities, this);
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_detail,
                     mStepEntities.get(0));
@@ -62,26 +61,27 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
     @Override
     public void recipeFragmentItemClickListener(int position) {
         if (findViewById(R.id.recipe_portrait) != null) {
-            StepActivity.startMe(this,mStepEntities,position);
-        }else if (findViewById(R.id.recipe_land) !=null){
+            StepActivity.startMe(this, mStepEntities, position);
+
+        } else if (findViewById(R.id.recipe_land) != null) {
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_detail,
                     mStepEntities.get(position));
-        }else if (findViewById(R.id.recipe_xl) !=null){
+
+        } else if (findViewById(R.id.recipe_xl) != null) {
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_detail,
                     mStepEntities.get(position));
         }
     }
 
-    public static void starMe(Context context, String recipeTitle ,List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities) {
+    public static void starMe(Context context, String recipeTitle, List<IngredientEntity> ingredientEntities, List<StepEntity> stepEntities) {
         Intent intent = new Intent(context, RecipeActivity.class);
-        intent.putExtra(EXTRA_TITLE,recipeTitle);
+        intent.putExtra(EXTRA_TITLE, recipeTitle);
         intent.putParcelableArrayListExtra(EXTRA_INGREDIENTS, (ArrayList) ingredientEntities);
         intent.putParcelableArrayListExtra(EXTRA_STEPS, (ArrayList) stepEntities);
         context.startActivity(intent);
     }
-
 
 
 }
