@@ -5,7 +5,6 @@
         Serving <xliff:g id="serving_people">%s</xliff:g> people
     </string>
     <string name="format_step_indicator">
-         <xliff:g id="current">%d</xliff:g>/
-         <xliff:g id="all">%d</xliff:g>
+        <xliff:g id="current">%d</xliff:g>/<xliff:g id="all">%d</xliff:g>
     </string>
 </resources>
