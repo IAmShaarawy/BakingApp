@@ -49,6 +49,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_land_detail,
                     mStepEntities.get(0));
+            getSupportActionBar().hide();
         } else if (findViewById(R.id.recipe_xl) != null) {
             RecipeFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_master,
@@ -57,6 +58,7 @@ public class RecipeActivity extends AppCompatActivity implements RecipeFragment.
             StepFragment.attachMe(getSupportFragmentManager(),
                     R.id.recipe_xl_detail,
                     mStepEntities.get(0));
+            getSupportActionBar().hide();
         }
     }
 

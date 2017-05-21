@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
 
 import net.elshaarawy.bakingapp.Data.Entities.StepEntity;
 import net.elshaarawy.bakingapp.Fragments.StepFragment;
@@ -30,6 +33,7 @@ public class StepActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step);
         Intent intent = getIntent();
+        getSupportActionBar().hide();
         mStepEntities = intent.getParcelableArrayListExtra(EXTRA_STEPS);
 
         mPosition = savedInstanceState == null
@@ -59,10 +63,23 @@ public class StepActivity extends AppCompatActivity implements View.OnClickListe
                 mStepForward.setImageResource(R.drawable.ic_keyboard_arrow_right_black_24dp);
             }
 
-        } else if (findViewById(R.id.step_detail_land) != null) {
-            VideoPlayerFragment.attachMe(getSupportFragmentManager(),
-                    R.id.step_detail_land,
-                    mStepEntities.get(mPosition).getVideoURL());
+        } else if (findViewById(R.id.step_detail_land) != null ) {
+            if (!mStepEntities.get(mPosition).getVideoURL().equals("")){
+                VideoPlayerFragment.attachMe(getSupportFragmentManager(),
+                        R.id.step_detail_land,
+                        mStepEntities.get(mPosition).getVideoURL());
+            }
+            else {
+                ImageView imageView = (ImageView) findViewById(R.id.step_detail_land_img);
+                imageView.setVisibility(View.VISIBLE);
+                if (!mStepEntities.get(mPosition).getThumbnailURL().equals("")){
+                    Picasso.with(this)
+                            .load(mStepEntities.get(mPosition).getThumbnailURL())
+                            .error(R.drawable.error)
+                            .placeholder(R.drawable.placeholder)
+                            .into(imageView);
+                }
+            }
         }
 
     }
