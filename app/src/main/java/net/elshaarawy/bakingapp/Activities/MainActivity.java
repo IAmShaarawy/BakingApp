@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.os.Parcelable;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
@@ -40,7 +41,7 @@ import static net.elshaarawy.bakingapp.Data.BakingContract.StepsColumns;
 public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>, RecipesAdapter.RecipeItemClickListener {
 
     private static final String BROADCAST_ACTION = "net.elshaarawy.bakingapp.activities.MainActivity";
-    private static final String KEY_POSITION = "key_position";
+    private static final String KEY_LAYOUT = "key_layout";
     PreferenceUtil mPreferenceUtil;
     private LoaderManager mLoaderManager;
     private static final int LOADER_ID_RECIPES = 101;
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private LocalBroadcastManager localBroadcastManager;
     private ProgressDialog progressDialog;
 
+    Parcelable recycleViewState;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         progressDialog.setCancelable(false);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        recycleViewState = mGridLayoutManager.onSaveInstanceState();
+        outState.putParcelable(KEY_LAYOUT,recycleViewState);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        if (savedInstanceState!=null){
+            recycleViewState = savedInstanceState.getParcelable(KEY_LAYOUT);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (recycleViewState !=null){
+            mGridLayoutManager.onRestoreInstanceState(recycleViewState);
+        }
+    }
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override

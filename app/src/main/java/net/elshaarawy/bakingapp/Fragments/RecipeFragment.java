@@ -4,6 +4,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +40,8 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
     private static final String EXTRA_LISTENER = "extra_listener";
     private static final String EXTRA_HAS_INDICATOR = "extra_has_indicator";
     private static final String EXTRA_ID = "extra_liked";
+    private static final String KEY_INGREDIENT = "key_ingredient";
+    private static final String KEY_STEPS = "key_steps";
     private List<IngredientEntity> mIngredientEntities;
     private List<StepEntity> mStepEntities;
     private RecyclerView mIngredientsRv, mStepsRv;
@@ -49,6 +52,8 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
     private PreferenceUtil mPreferenceUtil;
     private String itemId;
     private ImageButton mLike;
+    private LinearLayoutManager mIngredientLinearLM,mStepsLinearLM;
+    private Parcelable mIngredientRVState,mStepsRVState;
 
     public void setmRecipeFragmentCallbacks(RecipeFragmentCallbacks mRecipeFragmentCallbacks) {
         this.mRecipeFragmentCallbacks = mRecipeFragmentCallbacks;
@@ -75,15 +80,15 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
 
         mIngredientsRv = (RecyclerView) view.findViewById(R.id.recipe_ingredients_RV);
         mIngredientsRv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        mIngredientsRv.setLayoutManager(linearLayoutManager);
+        mIngredientLinearLM = new LinearLayoutManager(getContext());
+        mIngredientsRv.setLayoutManager(mIngredientLinearLM);
         mIngredientsAdapter = new IngredientsAdapter(mIngredientEntities);
         mIngredientsRv.setAdapter(mIngredientsAdapter);
 
         mStepsRv = (RecyclerView) view.findViewById(R.id.recipe_steps_RV);
         mStepsRv.addItemDecoration(new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL));
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(getContext());
-        mStepsRv.setLayoutManager(linearLayoutManager1);
+        mStepsLinearLM = new LinearLayoutManager(getContext());
+        mStepsRv.setLayoutManager(mStepsLinearLM);
         mStepsAdapter = new StepsAdapter(mStepEntities, this);
         mStepsAdapter.setHasIndicator(hasIndicator);
         mStepsRv.setAdapter(mStepsAdapter);
@@ -115,6 +120,30 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        mIngredientRVState = mIngredientLinearLM.onSaveInstanceState();
+        mStepsRVState = mStepsLinearLM.onSaveInstanceState();
+        outState.putParcelable(KEY_INGREDIENT,mIngredientRVState);
+        outState.putParcelable(KEY_STEPS,mStepsRVState);
+    }
+
+    @Override
+    public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
+        super.onViewStateRestored(savedInstanceState);
+        if (savedInstanceState!=null){
+            mIngredientRVState = savedInstanceState.getParcelable(KEY_INGREDIENT);
+            mStepsRVState = savedInstanceState.getParcelable(KEY_STEPS);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mIngredientRVState !=null){
+            mIngredientLinearLM.onRestoreInstanceState(mIngredientRVState);
+        }
+        if (mStepsRVState != null){
+            mStepsLinearLM.onRestoreInstanceState(mStepsRVState);
+        }
     }
 
     @Override
