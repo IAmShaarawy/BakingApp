@@ -2,6 +2,7 @@ package net.elshaarawy.bakingapp.Fragments;
 
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -106,9 +107,9 @@ public class RecipeFragment extends Fragment implements StepsAdapter.StepItemCli
             mPreferenceUtil.editValue(DefaultKeys.PREF_IS_DESIRED,itemId);
         }
 
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(getContext());
-        int [] appWidgetsId = appWidgetManager.getAppWidgetIds(new ComponentName(getContext(), IngredientsWidget.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetsId,R.id.widget_list);
+        Intent intent = new Intent(getContext(),IngredientsWidget.class);
+        intent.setAction(AppWidgetManager.ACTION_APPWIDGET_UPDATE);
+        getContext().sendBroadcast(intent);
     }
 
     @Override

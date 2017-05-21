@@ -9,6 +9,8 @@
         tools:text="Recipe ingredients"
         android:padding="8dp"
         android:minHeight="28dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:textSize="12sp"
         android:id="@+id/item_widget"
         android:textColor="@color/colorTextSubHeader"

@@ -25,11 +25,6 @@ public class IngredientsWidgetRemoteViewFactory implements RemoteViewsService.Re
 
     public IngredientsWidgetRemoteViewFactory(Context mContext) {
         this.mContext = mContext;
-        mPreferenceUtil = new PreferenceUtil(mContext, DefaultKeys.DEFAULT_SHARED_PREFERENCE);
-        id = mPreferenceUtil.getString(DefaultKeys.PREF_IS_DESIRED);
-        if (id == null || id.equals("")) {
-            id = "0";
-        }
     }
 
     @Override
@@ -39,6 +34,9 @@ public class IngredientsWidgetRemoteViewFactory implements RemoteViewsService.Re
 
     @Override
     public void onDataSetChanged() {
+        mPreferenceUtil = new PreferenceUtil(mContext, DefaultKeys.DEFAULT_SHARED_PREFERENCE);
+        id = mPreferenceUtil.getString(DefaultKeys.PREF_IS_DESIRED);
+
         String selection = IngredientsColumns.TABLE_NAME_INGREDIENTS + "." + IngredientsColumns._ID + "=?";
         String[] selectionArgs = new String[]{id};
         mCursor = mContext.getContentResolver().query(CONTENT_INGREDIENTS, null, selection, selectionArgs, null);
